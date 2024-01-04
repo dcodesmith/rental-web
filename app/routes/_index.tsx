@@ -14,8 +14,8 @@ export const loader = async ({
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
   const apiPath = process.env.RENTAL_API || "http://localhost:3001"
-  const res = await fetch(apiPath);
-  const data = await res.json()
+  const response = await fetch(apiPath);
+  const data = await response.json()
   return json({ data, q });
 };
 
