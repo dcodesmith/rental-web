@@ -1,5 +1,4 @@
-import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { type MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
@@ -8,19 +7,19 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({
-  request,
-}: LoaderFunctionArgs) => {
-  const url = new URL(request.url);
-  const q = url.searchParams.get("q");
+// export const loader = async ({
+//   request,
+// }: LoaderFunctionArgs) => {
+//   const url = new URL(request.url);
+//   const q = url.searchParams.get("q");
 
-  const res = await fetch("http://localhost:3001/api");
-  const data = await res.json()
-  return json({ data, q });
-};
+//   const res = await fetch("http://localhost:3001/api");
+//   const data = await res.json()
+//   return json({ data, q });
+// };
 
 export default function Index() {
-  const { data } = useLoaderData<typeof loader>();
+  // const { data } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex justify-center">
