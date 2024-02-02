@@ -20,15 +20,16 @@ export const loader = async ({
 };
 
 export default function Index() {
-  const { data } = useLoaderData<typeof loader>();
+  const { data, q } = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex justify-center">
+    <div className="flex items-center flex-col">
       <h1 className="mb-4 text-4xl leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl font-semibold">Rental Web</h1>
-      <div className="flex-col">
-        <pre className="flex">
+      <div className="flex-col text-center">
+        <code className="flex">
           {JSON.stringify(data, null, 2)}
-        </pre>
+        </code>
+        {q && `query string = ${q}`}
       </div>
     </div>
   );
