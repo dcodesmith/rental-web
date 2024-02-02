@@ -3,8 +3,8 @@ import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Rental App" },
+    { name: "description", content: "Welcome to Rental!" },
   ];
 };
 
@@ -13,9 +13,9 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
-  const apiPath = process.env.RENTAL_API || "http://localhost:3001"
-  const response = await fetch(apiPath);
-  const data = await response.json()
+  const apiPath = process.env.RENTAL_API || "http://localhost:3000"
+  const res = await fetch(apiPath);
+  const data = await res.json()
   return json({ data, q });
 };
 
