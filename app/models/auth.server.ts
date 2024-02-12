@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 const apiPath = process.env.RENTAL_API || "http://localhost:3000";
 
 export const login = async (email: string, password: string) => {
@@ -9,7 +11,10 @@ export const login = async (email: string, password: string) => {
     body: JSON.stringify({ email, password }),
   });
 
-  return response.json();
+  return z
+    .object({ accessToken: z.string(), refreshToken: z.string() })
+    .promise()
+    .parse(response.json());
 };
 
 export const refresh = async (refreshToken: string) => {
