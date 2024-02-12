@@ -1,3 +1,5 @@
+import { redirectDocument } from "@remix-run/node";
+import { destroySession, getSession } from "~/session.server";
 import { z } from "zod";
 
 const apiPath = process.env.RENTAL_API || "http://localhost:3000";
@@ -29,7 +31,12 @@ export const refresh = async (refreshToken: string) => {
   return response.json();
 };
 
-export const logout = async () => {};
+export const logout = async (request: Request) => {
+  const session = await getSession(request.headers.get("Cookie"));
+  throw redirectDocument("/", {
+    headers: { "set-cookie": await destroySession(session) },
+  });
+};
 
 export const signUp = async (email: string, password: string) => {
   const response = await fetch(`${apiPath}/authentication/sign-up`, {
