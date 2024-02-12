@@ -1,10 +1,16 @@
-import type { ActionFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, json, redirect, useActionData } from "@remix-run/react";
 
 import { login } from "~/models/auth.server";
+import { commitSession, getSession } from "~/session.server";
 
-export async function loader() {
-  return json({});
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get("Cookie"));
+  if (session.has("accessToken") && session.has("refreshToken")) {
+    return redirect("/");
+  }
+
+  return json(null);
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -13,9 +19,15 @@ export async function action({ request }: ActionFunctionArgs) {
   const password = String(formData.get("password"));
 
   const tokens = await login(email, password);
-  console.log(tokens);
 
-  return redirect("/");
+  const session = await getSession(request.headers.get("Cookie"));
+
+  session.set("accessToken", tokens.accessToken);
+  session.set("refreshToken", tokens.refreshToken);
+
+  return redirect("/", {
+    headers: { "set-cookie": await commitSession(session) },
+  });
 }
 
 export const meta = () => [{ title: "Login" }];
