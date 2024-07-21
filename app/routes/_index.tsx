@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 
 export const loader = async () => {
   const apiPath = process.env.RENTAL_API || "http://localhost:3000/cars";
-  const response = await fetch(apiPath);
+  const response = await fetch(`${apiPath}?status=available`);
   const cars = await response.json();
 
   return json({ cars });
@@ -32,11 +32,6 @@ export default function Index() {
   };
 
   return (
-    // <div className="flex items-center flex-col">
-    //   <h1 className="mb-4 text-4xl leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl font-semibold">
-    //     Rental Web
-    //   </h1>
-    //   <div className="container mx-auto px-4 py-8">
     <div className="relative rounded-xl overflow-auto p-8">
       <div className="text-gray-700 grid md:grid-cols-2 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 gap-4 text-sm leading-6 bg-stripes-fuchsia rounded-lg">
         {cars.map((car) => (
@@ -44,8 +39,6 @@ export default function Index() {
         ))}
       </div>
     </div>
-    //   </div>
-    // </div>
   );
 }
 
